@@ -1,5 +1,3 @@
-
-
 Crear la carpeta
 mkdir scraper-challenge
 cd scraper-challenge
@@ -21,3 +19,5 @@ npx tsc --init
 Cliente HTTP para conservar la cookie
 npm install tough-cookie axios-cookiejar-support
 
+Instalamos Prettier
+npm install -D prettier

@@ -1,15 +1,19 @@
 import * as cheerio from "cheerio";
 import { http } from "../http/client.js";
+import { Logger } from "../utils/logger.js";
 import {
-    extractTable,
-    parseDocuments,
-    extractViewState,
+    extractPageSize,
     extractRowCount,
-    extractPageSize
+    extractTable,
+    extractViewState,
+    parseDocuments,
 } from "./parser.js";
 
+/**
+ * Obtiene la página inicial del sitio y ejecuta la búsqueda
+ * para recuperar la primera página de resultados.
+ */
 export async function getInitialPage() {
-
     // Página inicial
     const response = await http.get("/repdig/consulta/consultaTfa.xhtml");
 
@@ -19,10 +23,9 @@ export async function getInitialPage() {
 
     const viewState = $("input[name='javax.faces.ViewState']").val();
 
-    if (!viewState)
-        throw new Error("No se encontró el ViewState.");
+    if (!viewState) throw new Error("No se encontró el ViewState.");
 
-    console.log("ViewState obtenido.");
+    Logger.info("ViewState obtenido.");
 
     // Construimos el POST
     const params = new URLSearchParams();
@@ -45,15 +48,11 @@ export async function getInitialPage() {
     params.append("listarDetalleInfraccionRAAForm:dt_scrollState", "0,0");
     params.append("javax.faces.ViewState", viewState.toString());
 
-    const searchResponse = await http.post(
-        "/repdig/consulta/consultaTfa.xhtml",
-        params,
-        {
-            headers: {
-                "Faces-Request": "partial/ajax"
-            }
-        }
-    );
+    const searchResponse = await http.post("/repdig/consulta/consultaTfa.xhtml", params, {
+        headers: {
+            "Faces-Request": "partial/ajax",
+        },
+    });
 
     const tableHtml = extractTable(searchResponse.data);
 
@@ -66,15 +65,13 @@ export async function getInitialPage() {
     const documents = parseDocuments(tableHtml);
 
     for (const document of documents) {
-
         console.log(document);
-
     }
 
     return {
         documents,
         viewState: newViewState,
         totalDocuments,
-        pageSize
+        pageSize,
     };
 }
