@@ -18,4 +18,6 @@ npm install -D typescript tsx @types/node
 Crear el tsconfig
 npx tsc --init
 
-Iniciar git
+Cliente HTTP para conservar la cookie
+npm install tough-cookie axios-cookiejar-support
+
