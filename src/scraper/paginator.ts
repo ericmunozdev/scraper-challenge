@@ -3,6 +3,7 @@ import { extractViewState } from "./parser.js";
 
 export async function getPage(
     first: number,
+    pageSize: number,
     viewState: string
 ) {
 
@@ -41,7 +42,7 @@ export async function getPage(
 
     params.append(
         "listarDetalleInfraccionRAAForm:dt_rows",
-        "10"
+        pageSize.toString()
     );
 
     params.append(

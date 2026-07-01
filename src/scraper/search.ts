@@ -3,7 +3,9 @@ import { http } from "../http/client.js";
 import {
     extractTable,
     parseDocuments,
-    extractViewState
+    extractViewState,
+    extractRowCount,
+    extractPageSize
 } from "./parser.js";
 
 export async function getInitialPage() {
@@ -55,6 +57,10 @@ export async function getInitialPage() {
 
     const tableHtml = extractTable(searchResponse.data);
 
+    const totalDocuments = extractRowCount(tableHtml);
+
+    const pageSize = extractPageSize(tableHtml);
+
     const newViewState = extractViewState(searchResponse.data);
 
     const documents = parseDocuments(tableHtml);
@@ -67,6 +73,8 @@ export async function getInitialPage() {
 
     return {
         documents,
-        viewState: newViewState
+        viewState: newViewState,
+        totalDocuments,
+        pageSize
     };
 }

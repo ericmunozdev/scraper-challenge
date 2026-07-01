@@ -1,4 +1,5 @@
 import * as cheerio from "cheerio";
+import { Document } from "../models/document.js";
 
 export function extractTable(xml: string) {
 
@@ -17,7 +18,7 @@ export function parseDocuments(html: string) {
 
     const $ = cheerio.load(html);
 
-    const documents: any[] = [];
+    const documents: Document[] = [];
 
     $("#listarDetalleInfraccionRAAForm\\:dt_data tr").each((index, tr) => {
 
@@ -86,5 +87,27 @@ export function extractViewState(xml: string): string {
         throw new Error("No se encontró el nuevo ViewState.");
 
     return match[1].trim();
+
+}
+
+export function extractRowCount(html: string): number {
+
+    const match = html.match(/rowCount:(\d+)/);
+
+    if (!match)
+        throw new Error("No se pudo obtener el total de registros.");
+
+    return Number(match[1]);
+
+}
+
+export function extractPageSize(html: string): number {
+
+    const match = html.match(/rows:(\d+)/);
+
+    if (!match)
+        throw new Error("No se pudo obtener el tamaño de página.");
+
+    return Number(match[1]);
 
 }
