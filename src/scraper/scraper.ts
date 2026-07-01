@@ -18,6 +18,8 @@ export class Scraper {
         // Todos los documentos encontrados durante la ejecución
         const allDocuments = [...documents];
 
+        await exportJson("documents.json", allDocuments);
+
         const totalDocuments = result.totalDocuments;
         const pageSize = result.pageSize;
 
@@ -80,9 +82,9 @@ export class Scraper {
 
             await delay(500);
 
-            // await exportJson("documents.json", allDocuments);
-
-            Logger.success("Archivo documents.json generado correctamente.");
+            Logger.info("documents.json actualizado.");
         }
+
+        Logger.success("Scraper finalizado correctamente.");
     }
 }

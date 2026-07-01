@@ -1,7 +1,7 @@
 {
     "name": "scraper-challenge",
     "version": "1.0.0",
-    "description": "",
+    "description": "Extractor HTTP en TypeScript para extraer resoluciones del OEFA y descargar los documentos PDF asociados.",
     "main": "index.js",
     "scripts": {
         "dev": "tsx src/index.ts",
